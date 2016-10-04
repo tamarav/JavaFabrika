@@ -1,0 +1,8 @@
+package src.interfaces;
+
+import exceptions.GreskaPriIzradiStaklaException;
+import proizvodi.*;
+
+public interface TestiranjeStakla {
+ public String testirajStaklo() throws GreskaPriIzradiStaklaException;
+}

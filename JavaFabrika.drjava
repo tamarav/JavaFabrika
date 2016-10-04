@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20140826-r5761">
+  <project autorefresh="false" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="src/server/Client.java" package="src.server" timestamp="10-Feb-2016 09:20:59">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/server/ServerThread.java" package="src.server" timestamp="09-Feb-2016 20:55:53">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/exceptions/GreskaPriIzradiStaklaException.java" package="src.exceptions" timestamp="09-Feb-2016 18:59:19">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/SajbaZaIzlog.java" package="src.proizvodi" timestamp="09-Feb-2016 18:59:19">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/interfaces/TestiranjeStakla.java" package="src.interfaces" timestamp="09-Feb-2016 19:08:27">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/classes/Masina.java" package="src.classes" timestamp="09-Feb-2016 19:17:39">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/classes/MasinaZaIzraduDrveneKonstrukcije.java" package="src.classes" timestamp="09-Feb-2016 19:18:52">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/classes/MasinaZaIzraduMehanizmaZaOtvaranje.java" package="src.classes" timestamp="09-Feb-2016 19:19:25">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/classes/MasinaZaSastavljanjeProizvoda.java" package="src.classes" timestamp="09-Feb-2016 19:24:08">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/exceptions/NeispravanLoginException.java" package="src.exceptions" timestamp="09-Feb-2016 19:24:23">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/exceptions/GreskaPriIzradiMehanizmaZaOtvaranjeException.java" package="src.exceptions" timestamp="09-Feb-2016 19:24:28">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/classes/MasinaZaIzraduPVCKonstrukcije.java" package="src.classes" timestamp="09-Feb-2016 19:24:32">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/classes/MasinaZaIzraduStakla.java" package="src.classes" timestamp="09-Feb-2016 19:25:10">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/interfaces/DebljaStakla.java" package="src.interfaces" timestamp="09-Feb-2016 19:25:32">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/interfaces/MahanizamZaZakljucavanje.java" package="src.interfaces" timestamp="09-Feb-2016 19:25:32">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/interfaces/MehanizamZaOtvaranjeNaKrovnojKosini.java" package="src.interfaces" timestamp="09-Feb-2016 19:25:32">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/interfaces/TestiranjeMehanizmaZaOtvranje.java" package="src.interfaces" timestamp="09-Feb-2016 19:25:32">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/Konstrukcija.java" package="src.proizvodi" timestamp="09-Feb-2016 19:26:34">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/KrovniProzor.java" package="src.proizvodi" timestamp="09-Feb-2016 19:27:15">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/MehanizamZaOtvaranje.java" package="src.proizvodi" timestamp="09-Feb-2016 19:27:43">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/Poluproizvod.java" package="src.proizvodi" timestamp="09-Feb-2016 19:28:47">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/Proizvod.java" package="src.proizvodi" timestamp="09-Feb-2016 19:29:16">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/Staklo.java" package="src.proizvodi" timestamp="09-Feb-2016 19:32:43">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/server/Server.java" package="src.server" timestamp="09-Feb-2016 19:43:15">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/Vrata.java" package="src.proizvodi" timestamp="09-Feb-2016 19:51:36">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/SigurnosnaVrata.java" package="src.proizvodi" timestamp="09-Feb-2016 19:51:37">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/proizvodi/Prozor.java" package="src.proizvodi" timestamp="09-Feb-2016 19:51:46">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+      <file name="src/server/ServerThreadManager.java" package="src.server" timestamp="10-Feb-2016 09:08:54">
+        <select from="31887" to="31887"/>
+        <scroll column="8744" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed>
+      <path name="./[ Source Files ]/src/classes/"/>
+      <path name="./[ Source Files ]/src/exceptions/"/>
+      <path name="./[ Source Files ]/src/interfaces/"/>
+      <path name="./[ Source Files ]/src/proizvodi/"/>
+    </collapsed>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>

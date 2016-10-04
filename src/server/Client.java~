@@ -1,0 +1,595 @@
+package src.server;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.BufferUnderflowException;
+import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import src.proizvodi.*;
+import src.exceptions.NeispravanLoginException;
+
+public class Client {
+  
+  public static final int TCP_PORT = 9999;
+  private BufferedReader in;
+  private PrintWriter out;
+  public static void main(String[] args) throws NeispravanLoginException {
+    try {    
+      InetAddress addr = InetAddress.getByName("127.0.0.1");
+      Socket sock = new Socket(addr, TCP_PORT);
+      PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())), true);
+      BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+      Scanner scan = new Scanner(System.in);
+      
+      boolean prijavljen = false;
+      boolean unosKolicine = false;
+      int kolicina = 1;
+      while (!prijavljen) {
+        System.out.println("*** DOBRODOSLI ***");
+        System.out.println("Unesite Vase podatke:");
+        try {
+          System.out.println("Username: ");
+          String username = "";
+          username = scan.nextLine();
+          String password = "";
+          System.out.println("Password: ");
+          password = scan.nextLine();
+          
+          out.println(username + "-" + password);
+          String prijava = in.readLine();
+          
+          if (prijava.equals("1")) {
+            prijavljen = true;
+            System.out.println("Uspjesno ste se prijavili na nas sistem.");
+          } else {
+            throw new NeispravanLoginException();
+          }
+        } catch (NeispravanLoginException e) {
+          System.out.println(e);
+          String ponovoPokusaj = scan.nextLine();
+          if (ponovoPokusaj.equalsIgnoreCase("NE")) {
+            prijavljen = true;
+          }
+        }
+      }
+      boolean uspjesno = false;
+      int br = 0;
+      while (!uspjesno) {
+
+        System.out.println("Izaberite neku od ponudjenih opcija");
+        System.out.println("************* M E N I *************");
+        System.out.println("1. - Pregled proizvoda koje fabrika moze da proizvede");
+        System.out.println("2. - Narudzba");
+        System.out.println("3. - Kraj");
+        int izborKorisnika = scan.nextInt();
+        switch (izborKorisnika) {
+          
+          case 1:
+            
+            System.out.println("\u2022 VRATA \n\t-vrsta materijala : drvo, PVC\n\t-dodaci:\n\t\t -staklo\n\t\t- zeljezna resetka");
+            System.out.println("\u2022 SIGURNOSNA VRATA");
+            System.out.println("\u2022 PROZOR \n\t-vrsta materijala : drvo, PVC\n\t -dodaci:\n\t\t- krila\n\t\t -roletne\n\t\t -resetke");
+            System.out.println("\u2022 KROVNI PROZOR");
+            System.out.println("\u2022 SAJBA ZA IZLOG");
+            break;
+            
+          case 2:
+            
+            boolean unosNarudzbe = false;
+            String narudzba;
+            System.out.println("Unesite redni broj proizvoda koji zelite naruciti?");
+            while (!unosNarudzbe) {       
+              System.out.println("1. - VRATA");
+              System.out.println("2. - SIGURNOSNA VRATA");
+              System.out.println("3. - PROZOR");
+              System.out.println("4. - KROVNI PROZOR");
+              System.out.println("5. - SAJBA ZA IZLOG");
+              System.out.println("6. - KRAJ");
+              narudzba = scan.nextLine();
+              switch (narudzba) {
+                case "1": // narudzba vrata - unos podataka
+                  
+                  boolean mat = false;
+                  String vrata = "";
+                  while (!mat) {
+                    System.out.println("Unesite materijal za konstrukciju:");
+                    System.out.println("1.Drvo");
+                    System.out.println("2.PVC");
+                    String izborMat = scan.nextLine();
+                    switch (izborMat) {
+                      case "1":
+                        vrata = "drvo";
+                        boolean resetke = false;
+                        boolean dodatakResetke = false;
+                        while (!dodatakResetke) {
+                          System.out.println("Zelite li dodati i resetke na vasa vrata? (DA/NE)");
+                          String odg = scan.nextLine();
+                          if (odg.equalsIgnoreCase("da")) {
+                            resetke = true;
+                            dodatakResetke = true;
+                            vrata += "-resetke"; 
+                          } else if (odg.equalsIgnoreCase("ne")) {
+                            resetke = false;
+                            dodatakResetke = true;
+                            vrata += "-0";
+                          }  
+                        }
+                        mat = true;
+                        break;
+                      case "2":
+                        vrata = "PVC-0";
+                        mat = true;
+                        break;
+                        
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  
+                  boolean unosDodataka = false;
+                  System.out.println("Zelite li da Vasa vrata imaju staklo:");
+                  
+                  while (!unosDodataka) {
+                    System.out.println("1. Da");
+                    System.out.println("2. Ne");
+                    
+                    String izbor = scan.nextLine();
+                    switch (izbor) {
+                      case "1":
+                        vrata += "-" + "staklo";
+                        unosDodataka = true;
+                        break;
+                      case "2":
+                        vrata += "-0";
+                        unosDodataka = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  
+                  boolean unosDimenzija = false;
+                  
+                  while (!unosDimenzija) {
+                    System.out.println("Izaberite dimenzije vrata:");
+                    System.out.println("1.- 200/100 (cm)");
+                    System.out.println("2.- 190/80 (cm)");
+                    System.out.println("3.- 200/300 (cm)");
+                    String dimenzije = scan.nextLine();
+                    
+                    switch (dimenzije) {
+                      case "1":
+                        vrata += "-200-100";
+                        unosDimenzija = true;
+                        break;
+                      case "2":
+                        vrata += "-190-80";
+                        unosDimenzija = true;
+                        break;
+                      case "3":
+                        vrata += "-200-300";
+                        unosDimenzija = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. MOlimo pokusajte ponovo");
+                        break; 
+                    }
+                  }
+                  out.println("1");
+                  out.println(vrata);
+                  break;
+                  
+                case "2": // narudzba sigurnosnih vrata
+                  System.out.println("izabrana je kategorija: SIGURNOSNA VRATA");
+                  boolean unosDimSV = false;
+                  String sv = "sigurnosna vrata";
+                  while (!unosDimSV) {
+                    System.out.println("Izaberite dimenzije:");
+                    System.out.println("1. - 190/80");
+                    System.out.println("2. - 200/100");
+                    System.out.println("3. - 50/50");
+                    String dim = scan.nextLine();
+                    switch (dim) {
+                      case "1":
+                        sv += "-190-80";
+                        unosDimSV = true;
+                        break;
+                      case "2":
+                        sv += "-200-100";
+                        unosDimSV = true;
+                        break;
+                      case "3":
+                        sv += "-50-50";
+                        unosDimSV = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    } 
+                  }
+                  out.println("2");
+                  out.println(sv);
+                  break;
+                  
+                case "3": // narudzba prozora - unos podataka
+                  
+                  System.out.println("izabrana je kategorija: PROZOR");
+                  mat = false;
+                  String prozor = "";
+                  while (!mat) {
+                    System.out.println("Unesite materijal za konstrukciju:");
+                    System.out.println("1.Drvo");
+                    System.out.println("2.PVC");
+                    int izbor = scan.nextInt();
+                    switch (izbor) {
+                      case 1:
+                        prozor = "drvo";
+                        mat = true;
+                        break;
+                      case 2:
+                        prozor = "PVC";
+                        mat = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  
+                  boolean unosKrila = false;
+                  
+                  while (!unosKrila) {
+                    System.out.println("Unesite sa koliko krila zelite da narucite prozor:");
+                    System.out.println("1. - 1 prozorsko krilo");
+                    System.out.println("2. - 2 prozorska krila");
+                    String brojKrila = scan.nextLine();
+                    
+                    switch (brojKrila) {
+                      case "1":
+                        prozor += "-1";
+                        unosKrila = true;
+                        break;
+                      case "2":
+                        prozor += "-2";
+                        unosKrila = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                    }
+                  }
+                  
+                  boolean unosRoletne = false;
+                  
+                  while (!unosRoletne) {
+                    System.out.println("Zelite li naruciti i roletne za vas prozor?");
+                    System.out.println("1. - da");
+                    System.out.println("2. - ne");
+                    String roletne = scan.nextLine();
+                    switch (roletne) {
+                      case "1":
+                        prozor += "-1";
+                        unosRoletne = true;
+                        break;
+                      case "2":
+                        prozor += "-0";
+                        unosRoletne = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  boolean unosStakala = false;
+                  while (!unosStakala) {
+                    System.out.println("Kakva stakla zelite na svom prozoru");
+                    System.out.println("1. - Jednoslojno staklo");
+                    System.out.println("2. - Dvoslojno staklo");
+                    System.out.println("3. - Troslojno staklo");
+                    String brStakala = scan.nextLine();
+                    
+                    switch (brStakala) {
+                      case "1":
+                        prozor += "-1";
+                        unosStakala = true;
+                        break;
+                      case "2":
+                        prozor += "-2";
+                        unosStakala = true;
+                        break;
+                      case "3":
+                        prozor += "-3";
+                        unosStakala = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                        
+                    }
+                  }
+                  boolean unosDim = false;
+                  while (!unosDim) {
+                    System.out.println("Izaberite zeljene dimenzije");
+                    System.out.println("1. - 100/60");
+                    System.out.println("2. - 50/50");
+                    System.out.println("3. - 100/250");
+                    System.out.println("4. - 45/30");
+                    String dimProzor = scan.nextLine();
+                    
+                    switch (dimProzor) {
+                      case "1":
+                        prozor += "-100-60";
+                        unosDim = true;
+                        break;
+                      case "2":
+                        prozor += "-50-50";
+                        unosDim = true;
+                        break;
+                      case "3":
+                        prozor += "-100-250";
+                        unosDim = true;
+                        break;
+                      case "4":
+                        prozor += "-45-30";
+                        unosDim = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Pokusajte ponovo");
+                        break;     
+                    }
+                  }
+                  boolean unosResetke = false;
+                  while (!unosResetke) {
+                    System.out.println("Zelite li resetke na prozoru? ");
+                    System.out.println("1. - da");
+                    System.out.println("2. - ne");
+                    String resetke = scan.nextLine();
+                    switch (resetke) {
+                      case "1":
+                        prozor += "-1";
+                        unosResetke = true;
+                        break;
+                      case "2":
+                        prozor += "-0";
+                        unosResetke = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  out.println("3");
+                  out.println(prozor);
+                  break;
+                case "4": // naruzdba krovni prozor
+                  String nar = "krovni prozor";
+                  boolean matKP = false;
+                  while (!matKP) {
+                    System.out.println("Unesite materijal za konstrukciju:");
+                    System.out.println("1.Drvo");
+                    System.out.println("2.PVC");
+                    int izbor = scan.nextInt();
+                    switch (izbor) {
+                      case 1:
+                        nar = "drvo";
+                        matKP = true;
+                        break;
+                      case 2:
+                        nar = "PVC";
+                        matKP = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  boolean unosDimenzijaKP = false;
+                  while (!unosDimenzijaKP) {
+                    System.out.println("Izaberite dimenzije vrata:");
+                    System.out.println("1.- 80/80 (cm)");
+                    System.out.println("2.- 100/50 (cm)");
+                    System.out.println("3.- 50/50 (cm)");
+                    String dimenzije = scan.nextLine();
+                    switch (dimenzije) {
+                      case "1":
+                        nar += "-80-80";
+                        unosDimenzijaKP = true;
+                        break;
+                      case "2":
+                        nar += "-100-50";
+                        unosDimenzijaKP = true;
+                        break;
+                      case "3":
+                        nar += "-50-50";
+                        unosDimenzijaKP = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. MOlimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  out.println("4");
+                  out.println(nar);
+                  break;
+                case "5": // narudzba sajba za izlog koja se moze sastojati iz vise dijelova
+
+                  String narudzbaSajba = "";
+                  System.out.println("izabrana je kategorija: SAJBA");
+                  mat = false;
+                  while (!mat) {
+                    System.out.println("Unesite materijal za konstrukciju:");
+                    System.out.println("1.Drvo");
+                    System.out.println("2.PVC");
+                    int izbor = scan.nextInt();
+                    switch (izbor) {
+                      case 1:
+                        narudzbaSajba = "drvo";
+                        mat = true;
+                        break;
+                      case 2:
+                        narudzbaSajba = "PVC";
+                        mat = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  
+                  boolean unosSajba = false;
+                  
+                  while (!unosSajba) {
+                    System.out.println("Unesite iz koliko dijelova zelite da se sastoji sajba za izlog?");
+                    System.out.println( "1. - jedan dio\n2. - dva dijela\n3. - tri dijela\n4. - cetiri dijela");
+                    String brDijelova = scan.nextLine();
+                    switch (brDijelova) {
+                      case "1":
+                        narudzbaSajba += "-1";
+                        unosSajba = true;
+                        break;
+                      case "2":
+                        narudzbaSajba += "-2";
+                        unosSajba = true;
+                        break;
+                      case "3":
+                        narudzbaSajba += "-3";
+                        unosSajba = true;
+                        break;
+                      case "4":
+                        narudzbaSajba += "-4";
+                        unosSajba = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Molimo pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  
+                  boolean unosDimSajbe = false;
+                  
+                  while (!unosDimSajbe) {
+                    System.out.println("Izaberite dimenzije");
+                    System.out.println("1. - 200/200");
+                    System.out.println("2. - 100/100");
+                    System.out.println("3. - 100/200");
+                    String dimSajbe = scan.nextLine();
+                    
+                    switch (dimSajbe) {
+                      case "1":
+                        narudzbaSajba += "-200-200";
+                        unosDimSajbe = true;
+                        break;
+                      case "2":
+                        narudzbaSajba += "-100-100";
+                        unosDimSajbe = true;
+                        break;
+                      case "3":
+                        narudzbaSajba += "-100-200";
+                        unosDimSajbe = true;
+                        break;
+                      default:
+                        System.out.println("Pogresan unos. Pokusajte ponovo");
+                        break;
+                    }
+                  }
+                  out.println("5");
+                  out.println(narudzbaSajba);
+                  break;
+                case "6":
+                  unosNarudzbe = true;
+                  out.println("6");
+                  out.println("0");
+                 
+                    System.out.println("preuzimanje zip fajla");
+                    System.out.println("Preuzeti dokument je raspakovan");              
+                  File[] preuzetiProizvodi = (new File("client/proizvodi/")).listFiles();
+                  System.out.println("Preuzeti su proizvodi: ");
+                for(File f : preuzetiProizvodi){
+                  System.out.println("\u2022 " + f.toString());
+                }
+                break;
+                default:
+                  System.out.println("Pogresan unos. Pokusajte ponovo");
+                  break;
+              }
+            }
+            break;
+          case 3:
+            uspjesno = true;  
+            break;  
+          default:
+            System.out.println("Pogresan unos.");
+            break;
+        }
+         try {
+                    preuzmiZip(sock, in);
+         }catch(Exception e){}
+      }
+
+      scan.close();
+      in.close();
+      out.close();
+      sock.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  public static void preuzmiZip(Socket sock, BufferedReader in) throws Exception {
+    
+    DataInputStream is = new DataInputStream(sock.getInputStream());
+    long duzina = is.readLong();
+    int kontrolnaDuzina = 0, flag = 0;
+    byte[] buffer = new byte[1024];
+    FileOutputStream fajl = new FileOutputStream(new File("client/gotovi_proizvodi.zip"));
+    while ((kontrolnaDuzina = is.read(buffer)) > 0) {
+      fajl.write(buffer, 0, kontrolnaDuzina);
+      flag += kontrolnaDuzina;
+      if (duzina == flag)
+        break;
+      
+    }
+    fajl.close();
+    System.out.println("Preuzimanje zip fajla je  zavrseno...");
+  }
+  
+  public static synchronized void unzip(Socket sock, BufferedReader in) {
+    
+    byte[] buffer = new byte[1024];
+    try {
+      ZipInputStream zis = new ZipInputStream(new FileInputStream("client/gotovi_proizvodi.zip"));
+      ZipEntry ze = zis.getNextEntry();
+      while (ze != null) {
+        File fajl = new File("client/gotovi_proizvodi_koji_se_preuzimaju.txt");
+        FileOutputStream fos = new FileOutputStream(fajl);
+        int len;
+        while ((len = zis.read(buffer)) > 0) {
+          fos.write(buffer, 0, len);
+        }
+        fos.close();
+        ze = zis.getNextEntry();
+      }
+      zis.closeEntry();
+      zis.close();
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+    System.out.println("Fajl je unzipovan");
+  }
+  
+}
